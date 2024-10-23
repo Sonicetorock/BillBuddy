@@ -4,15 +4,28 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
+// COnnect to DB
+const { DBConnection } = require('./config/db');
+
+// Import routes and middleware
+const userRoutes = require('./routes/userRoutes');
+const expenseRoutes = require('./routes/expenseRoutes');
+const errorHandler = require('./middlewares/errorHandler');
+
+dotenv.config();
+
 const app = express();
 
-// middlewares
-dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
 
-// COnnect to DB
-const { DBConnection } = require('./config/db');
+// Routes
+app.use(userRoutes);
+app.use(expenseRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
+
 
 // server ignition
 const PORT = process.env.PORT || 3000;
