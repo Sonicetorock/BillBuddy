@@ -28,7 +28,7 @@ const expenseSchema = new mongoose.Schema({
     },
     status: {
       type: String,
-      enum: ['pending', 'paid', 'partial'],  // Added status field for each participant
+      enum: ['pending', 'paid'], // status field for each participant for the split
       default: 'pending'
     }
   }],
