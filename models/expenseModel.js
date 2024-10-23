@@ -30,6 +30,12 @@ const expenseSchema = new mongoose.Schema({
       type: String,
       enum: ['pending', 'paid'], // status field for each participant for the split
       default: 'pending'
+    },
+    paidOn: {
+      type: Date,
+      required: function() {
+        return this.isPaid;  // only require this field if isPaid is true
+      }
     }
   }],
   isPaid: {
