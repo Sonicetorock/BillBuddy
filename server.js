@@ -10,6 +10,7 @@ const { DBConnection } = require('./config/db');
 // Import routes and middleware
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
+const invoiceRoutes = require('./routes/invoiceRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 // Routes
 app.use(userRoutes);
 app.use(expenseRoutes);
+app.use('/invoices', invoiceRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
