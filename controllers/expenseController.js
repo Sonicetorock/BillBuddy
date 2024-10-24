@@ -7,7 +7,20 @@ const User = require('../models/userModel');
 // @param - participants - will be given by frontend like user will select the users those are registered in db along with the amount they owe
 exports.addExpense = async (req, res, next) => {
   try {
-    const { description, totalAmount, splitMethod, participants } = req.body;
+    const { description, totalAmount, splitMethod, participants, userId } = req.body;
+
+     // Data validation: if any one of them is not there, don't accept
+     if (!description || !totalAmount || !splitMethod || !participants || !userId) {
+      return res.status(400).json({ success: false, message: 'Description, totalAmount, splitMethod, participants, and userId are required.' });
+    }
+
+    // if uerId == participant then set status as paid on paidOn field as current date
+    participants.forEach(participant => {
+      if (participant.user === userId) {
+        participant.status = 'paid';
+        participant.paidOn = new Date();
+      }
+    });
     const expense = new Expense({ description, totalAmount, splitMethod, participants });
     await expense.save();
     res.status(201).json({ success: true, data: expense });
@@ -21,7 +34,9 @@ exports.addExpense = async (req, res, next) => {
 // @for specific user
 exports.getUserExpenses = async (req, res, next) => {
   try {
-    const expenses = await Expense.find({ 'participants.user': req.params.userId });
+    const uid = req.params.userId;
+    if(!uid)  return res.status(400).json({ success: false, message: 'Require userID' });
+    const expenses = await Expense.find({ 'participants.user': uid });
     res.status(200).json({ success: true, data: expenses });
   } catch (error) {
     next(error);
@@ -45,7 +60,7 @@ exports.getOverallExpenses = async (req, res, next) => {
 // @for specic user to split he belongs to
 exports.markAsPaid = async (req, res) => {
   const { expenseId, userId } = req.body;
-
+  if(!userId || !expenseId)  return res.status(400).json({ success: false, message: 'This transaction cant happen ! Provide all required details' });
   try {
     const expense = await Expense.findById(expenseId);
     console.log("Expsense :", expense)
