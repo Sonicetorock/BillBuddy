@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 
-//@post method - add user
+//API endpoint : 'https://localhost:3000/users'
+//@POST method - add user
 //@needs name, email, mobile
 //@by specific user
 exports.createUser = async (req, res, next) => {
@@ -18,7 +19,9 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-//@get method - fetch user details
+//API endpoint : 'https://localhost:3000/users/:id'
+// Exmple : 'https://localhost:3000/users/6717uisd678yu7zx98'
+//@GET method - fetch user details
 //@params - userID of mongoDB
 //@for specific user or admin
 exports.getUser = async (req, res, next) => {

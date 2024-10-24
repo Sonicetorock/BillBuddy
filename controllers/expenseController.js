@@ -1,7 +1,8 @@
 const Expense = require('../models/expenseModel');
 const User = require('../models/userModel');
 
-// @post method - add expense
+// API endpoint : 'https://localhost:3000/expenses'
+// @POST method - add expense
 // @needs description, totalAmount, splitMethod, participants
 // @by a specific user
 // @param - participants - will be given by frontend like user will select the users those are registered in db along with the amount they owe
@@ -29,8 +30,10 @@ exports.addExpense = async (req, res, next) => {
   }
 };
 
-// @get method - fetch expenses for a specific user
-// @needs userID of mongoDB
+// API endpoint : 'https://localhost:3000/expenses/user/:userId'
+// Example : 'https://localhost:3000/expenses/user/6717sjkd67shjki
+// @GET method - fetch expenses for a specific user
+// @Needs - userID of mongoDB
 // @for specific user
 exports.getUserExpenses = async (req, res, next) => {
   try {
@@ -43,7 +46,8 @@ exports.getUserExpenses = async (req, res, next) => {
   }
 };
 
-// @get method - Retrieve all expenses 
+//API endpoint : 'https://localhost:3000/expenses'
+// @GET method - Retrieve all expenses 
 // @no params required
 // @for admin
 exports.getOverallExpenses = async (req, res, next) => {
@@ -55,9 +59,10 @@ exports.getOverallExpenses = async (req, res, next) => {
   }
 };
 
-// @put method - Mark a specific participant as paid for paticular expense
+//API endpoint : 'https://localhost:3000/expenses/pay'
+// @PUT method - Mark a specific participant as paid for paticular expense
 // @param expenseId - id of the expense, userId - id of the user
-// @for specic user to split he belongs to
+// @for specic user to split to which he belongs to
 exports.markAsPaid = async (req, res) => {
   const { expenseId, userId } = req.body;
   if(!userId || !expenseId)  return res.status(400).json({ success: false, message: 'This transaction cant happen ! Provide all required details' });
